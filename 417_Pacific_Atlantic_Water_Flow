@@ -1,0 +1,34 @@
+class Solution:
+    def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+            
+        if not matrix or len(matrix) == 0:
+            return []
+        xLen = len(matrix)
+        yLen = len(matrix[0])
+        canReachP = [[False for _ in range(yLen)] for _ in range(xLen)]
+        canReachA = [[False for _ in range(yLen)] for _ in range(xLen)]
+
+        def dfs(x, y, canReach):
+            if canReach[x][y]:
+                return
+            canReach[x][y] = True
+            if x > 0 and matrix[x][y] <= matrix[x - 1][y]:
+                dfs(x - 1, y, canReach)
+            if y > 0 and matrix[x][y] <= matrix[x][y - 1]:
+                dfs(x, y - 1, canReach)
+            if x < xLen - 1 and matrix[x][y] <= matrix[x + 1][y]:
+                dfs(x + 1, y, canReach)
+            if y < yLen - 1 and matrix[x][y] <= matrix[x][y + 1]:
+                dfs(x, y + 1, canReach)
+        for x in range(xLen):
+            dfs(x, 0, canReachP)
+            dfs(x, yLen - 1, canReachA)
+        for y in range(yLen):
+            dfs(0, y, canReachP)
+            dfs(xLen - 1, y, canReachA)
+        ans = []
+        for x in range(xLen):
+            for y in range(yLen):
+                if canReachP[x][y] and canReachA[x][y]:
+                    ans.append([x, y])
+        return ans
