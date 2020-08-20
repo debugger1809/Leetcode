@@ -1,0 +1,44 @@
+class Solution:
+    def majorityElement(self, nums: List[int]) -> List[int]:
+        
+        
+        n = len(nums)
+        res = []
+        
+        c1 , c2 = 0 , 0
+        first , sec = float('inf') , float('inf')
+        
+        
+        for i in nums:
+            
+            if first == i:
+                c1 += 1
+            elif sec == i:
+                c2 +=1
+            elif c1 == 0:
+                c1 += 1
+                first = i
+            elif c2 == 0:
+                c2 += 1
+                sec = i
+            else:
+                c1 -= 1
+                c2 -= 1
+
+        c1 , c2 = 0 , 0
+                
+                
+        for i in nums:
+            
+            if i == first:
+                c1 += 1
+            elif i == sec:
+                c2 += 1
+                
+                
+        if c1 > n // 3:
+            res.append(first)
+        if c2 > n // 3:
+            res.append(sec)
+            
+        return res
